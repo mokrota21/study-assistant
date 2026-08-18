@@ -9,13 +9,19 @@ Two parts: **[how to start](#how-to-start)** (read once) and **[what you can cha
 
 ### The one-time bit
 
+You need [Claude Code](https://claude.com/claude-code) and
+[uv](https://docs.astral.sh/uv/getting-started/installation/) installed. Then:
+
 ```powershell
-cd c:\Users\mokrota\Documents\GitHub\study-assistant
-uv sync
+cd study-assistant
+uv sync                              # installs everything into a local .venv
+uv run python -m tests.doctor        # checks this machine is set up right
 ```
 
 That's it. There's no server to start, nothing to leave running, nothing in Task Scheduler.
 Claude Code launches the harness itself and shuts it down when you close the chat.
+
+If `doctor` reports a problem, it tells you the fix; `--fix` repairs the safe ones itself.
 
 ### Every time
 

@@ -12,13 +12,21 @@ Also: [docs/SETUP.md](docs/SETUP.md) for install details and troubleshooting,
 
 ## Run it
 
+Needs [Claude Code](https://claude.com/claude-code) and
+[uv](https://docs.astral.sh/uv/getting-started/installation/).
+
 ```powershell
 uv sync
+uv run python -m tests.doctor        # verifies this machine; --fix repairs what it can
 claude
 ```
 
 Then `/intake <subject> [textbook]`. There is no server to start — the MCP server is a
-stdio child process Claude Code spawns with the session.
+stdio child process Claude Code spawns with the session, so there is no daemon, no Docker
+and nothing to autostart.
+
+Built and tested on Windows 11; the macOS and Linux paths exist but are unexercised, and
+`doctor` will tell you if anything needs adjusting.
 
 ## Why it is built this way
 
@@ -54,7 +62,7 @@ subjects/<name>/    plan.md, materials/, lessons/, notes/, covered.md,
                     exam-pool/, results/
 state/              harness.db, block.json, calendar.json
 config.json         everything tunable (PRD §7), with per-domain overrides
-tests/              uv run python -m tests.run_all
+tests/              doctor.py (environment check) + 5 suites, 110 checks
 ```
 
 ## Status

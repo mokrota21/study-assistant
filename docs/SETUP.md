@@ -1,10 +1,22 @@
 # Setup and operations
 
+## Prerequisites
+
+| Needed | Why | How to get it |
+|---|---|---|
+| **[Claude Code](https://claude.com/claude-code)** | The interface. This is a Claude Code project, not a standalone app | `npm i -g @anthropic-ai/claude-code`, or the desktop app |
+| **[uv](https://docs.astral.sh/uv/getting-started/installation/)** | Runs the MCP server and manages its Python 3.12 environment | Windows: `winget install astral-sh.uv`<br>macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+| **A system Python, 3.7+** | The four hooks run on it directly — stdlib only, no virtualenv, which is what keeps them at ~75 ms | Usually already installed |
+
+No Docker, no database, no server process to manage.
+
 ## TL;DR
 
 ```
-cd c:\Users\mokrota\Documents\GitHub\study-assistant
+git clone https://github.com/mokrota21/study-assistant.git
+cd study-assistant
 uv sync
+uv run python -m tests.doctor
 claude
 ```
 
@@ -12,6 +24,20 @@ Then `/intake <subject> [textbook]`.
 
 **There is no server to start.** No Docker, no daemon, no autostart to configure — see
 [Do I need to run a server?](#do-i-need-to-run-a-server) below.
+
+## Platform support
+
+Built and tested on **Windows 11**. The macOS and Linux code paths exist and are simple,
+but have not been run. Two things to check there — `tests.doctor` checks both for you:
+
+- **Hooks call `python`.** On many macOS/Linux systems only `python3` exists, in which case
+  the hooks exit silently and you get no block clock and no error.
+  `uv run python -m tests.doctor --fix` detects this and rewrites `.claude/settings.json`.
+- **Notifications** use `osascript` (macOS) or `notify-send` (Linux) instead of a Windows
+  toast. Test with:
+  `uv run python -c "from harness.notify import notify; print(notify('test','hi'))"`
+
+Everything else — scheduler, FSRS, mastery gates, exam pools — is portable Python.
 
 ---
 
@@ -51,7 +77,7 @@ So:
   long-running network services. This is a child process that lives and dies with your
   chat session.
 
-### Measured cost on this machine
+### Measured cost (Windows 11, reference machine)
 
 | | |
 |---|---|
@@ -71,8 +97,9 @@ keeps the timer thread alive.
 ## First run
 
 ```powershell
-cd c:\Users\mokrota\Documents\GitHub\study-assistant
-uv sync            # creates .venv with Python 3.12, installs mcp + fsrs + pydantic
+cd study-assistant
+uv sync                              # creates .venv (Python 3.12) with mcp + fsrs + pydantic
+uv run python -m tests.doctor        # confirms this machine can actually run it
 claude
 ```
 
@@ -98,13 +125,18 @@ Everyday commands: `/status`, `/study`, `/review`, `/wrapup`, `/stuck`, `/health
 ## Verifying the install
 
 ```powershell
-uv run python -m tests.run_all
+uv run python -m tests.doctor        # is this machine set up correctly?
+uv run python -m tests.run_all       # is the harness itself correct?
 ```
 
-Four suites: the core loop and its guardrails (63 checks), the MCP tool surface (54 tools),
-the hooks against the *system* interpreter (27 checks), and a real stdio launch of the
-server exactly as Claude Code starts it. All run against throwaway directories and never
-touch `state/` or `subjects/`.
+`doctor` checks the things that fail silently — the hook interpreter above all, since a
+hook that cannot start just exits quietly. Add `--fix` to let it repair what is safely
+repairable. `run_all` runs the test suite:
+
+Five suites: config layering (13), the core loop and its guardrails (63), the MCP tool
+surface (54 tools), the hooks against the *system* interpreter (27), and a real stdio launch
+of the server exactly as Claude Code starts it (7). All run against throwaway directories
+and never touch your `state/` or `subjects/`.
 
 Inside Claude Code, `/mcp` should list `learning-harness` as connected.
 
@@ -157,7 +189,7 @@ becomes meaningful after enough delayed re-checks have accumulated.
 **`/mcp` shows the server as failed.** Run `uv run learning-harness` in a terminal — it
 should sit there silently waiting for stdio input (Ctrl+C to quit). If it errors, `uv sync`
 again. If `uv` is not on PATH for the Claude Code process, put its absolute path in
-`.mcp.json` (`C:\Users\mokrota\.local\bin\uv.exe`).
+`.mcp.json` (find it with `where uv` on Windows, `which uv` elsewhere).
 
 **No block-clock line appears in Claude's context.** The hooks call `python`. Check
 `python --version` resolves (3.8+ is fine — the hooks are stdlib-only by design). If your
