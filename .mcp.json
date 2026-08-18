@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "learning-harness": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--quiet", "learning-harness"],
+      "env": {}
+    }
+  }
+}

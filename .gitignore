@@ -1,0 +1,20 @@
+# Harness runtime state — machine-local, not shareable
+state/harness.db
+state/harness.db-wal
+state/harness.db-shm
+state/block.json
+state/block.tmp
+state/hook-cache.json
+
+# The calendar store IS worth keeping if you want your commitments versioned.
+# Uncomment to keep it private instead:
+# state/calendar.json
+
+.venv/
+__pycache__/
+*.py[cod]
+.uv/
+uv.lock.bak
+
+.DS_Store
+Thumbs.db

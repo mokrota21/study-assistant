@@ -1,0 +1,58 @@
+{
+  "_comment": "Learning Harness configuration (PRD §7). Every field of harness/config.py Settings can be set here. Env vars HARNESS_* override this file; subjects/<subject>/config.json overrides both for that subject.",
+
+  "focus_minutes": 50,
+  "break_minutes": 10,
+  "long_break_after_minutes": 120,
+  "max_blocks_per_day": 4,
+  "day_start_hour": 9,
+  "day_end_hour": 22,
+
+  "review_segment_minutes": 15,
+  "review_cap_per_block": 12,
+
+  "fsrs_desired_retention": 0.9,
+  "trickle_down_enabled": true,
+  "trickle_down_credit": 0.5,
+  "trickle_down_depth": 2,
+
+  "mastery_min_minutes": 45,
+  "mastery_min_reps": 6,
+  "mastery_min_distinct_days": 3,
+  "mastery_min_span_days": 5,
+  "mastery_max_hint_rate": 0.34,
+  "mastery_recheck_days": 21,
+
+  "kolokvium_trigger_weeks": 7.0,
+  "kolokvium_trigger_concepts": 12,
+  "exam_problem_pool_threshold": 20,
+  "remediation_threshold": 0.6,
+
+  "solo_mode_default": true,
+  "scheduling_horizon_days": 14,
+  "content_language": "en",
+
+  "notifications_enabled": true,
+  "notification_sound": true,
+  "notify_before_end_minutes": 5,
+
+  "calendar_provider": "local",
+
+  "domains": {
+    "_comment": "Per-domain overrides, applied when a subject's config.json sets \"domain\". Mastery thresholds especially should differ by domain.",
+    "math": {
+      "mastery_min_minutes": 60,
+      "mastery_min_reps": 8,
+      "kolokvium_min_provable": 4
+    },
+    "cooking": {
+      "mastery_min_minutes": 90,
+      "mastery_min_reps": 10,
+      "mastery_min_span_days": 14
+    },
+    "hardware": {
+      "mastery_min_minutes": 75,
+      "mastery_min_reps": 6
+    }
+  }
+}
