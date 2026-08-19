@@ -25,6 +25,18 @@ from .timeutil import humanize_delta, now, to_iso, to_local, to_utc, parse
 
 RATING_NAMES = {1: "Again", 2: "Hard", 3: "Good", 4: "Easy"}
 
+#: Concept statuses whose cards never enter the review queue or the forecast.
+#:
+#: ``seed_cards`` gives every registered concept a card due immediately, so without
+#: this filter a freshly planned subject reports its whole graph as overdue and the
+#: first block opens by demanding free-recall on material never taught — recognition
+#: theatre, which is the one thing reviews must not be. A concept becomes reviewable
+#: when :func:`grade_review` first flips it to ``learning``. ``mastered`` and
+#: ``revoked`` stay in the queue by design.
+UNREVIEWABLE_STATUSES = ("excluded", "planned", "frontier")
+
+_STATUS_FILTER = "c.status NOT IN (" + ", ".join(f"'{s}'" for s in UNREVIEWABLE_STATUSES) + ")"
+
 
 def _scheduler(settings: Settings) -> Scheduler:
     return Scheduler(
@@ -125,7 +137,7 @@ def due_queue(
         "SELECT c.id AS concept_id, c.subject, c.name, c.status, cards.due, cards.state, "
         "       cards.stability, cards.reps, cards.lapses "
         "FROM cards JOIN concepts c ON c.id = cards.concept_id "
-        "WHERE cards.suspended = 0 AND c.status != 'excluded'"
+        f"WHERE cards.suspended = 0 AND {_STATUS_FILTER}"
     )
     params: list[Any] = []
     if subject:
@@ -326,7 +338,8 @@ def forecast(subject: Optional[str] = None, days: int = 14) -> dict[str, Any]:
     init_db()
     query = (
         "SELECT substr(cards.due, 1, 10) AS day, COUNT(*) AS n "
-        "FROM cards JOIN concepts c ON c.id = cards.concept_id WHERE cards.suspended = 0"
+        "FROM cards JOIN concepts c ON c.id = cards.concept_id "
+        f"WHERE cards.suspended = 0 AND {_STATUS_FILTER}"
     )
     params: list[Any] = []
     if subject:

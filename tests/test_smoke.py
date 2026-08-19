@@ -122,12 +122,23 @@ def main() -> int:
     # --- reviews and FSRS ------------------------------------------------
     print("\nspaced repetition")
     srs.seed_missing_cards(subject)
+    summary = srs.card_summary(subject)
+    carded = [c for c in summary if c["status"] != "excluded" and c["due"]]
+    check("all non-excluded concepts have cards", len(carded) == 4, str(len(carded)))
+    check("excluded concept has no card", all(c["due"] is None for c in summary if c["name"] == "Measure theory"))
+
+    # Seeding must not make untaught material reviewable: every concept here is still
+    # 'planned', so the queue is empty even though all four cards are due. Otherwise a
+    # fresh subject opens its first block demanding free recall on material never taught.
     queue = srs.due_queue(subject)
-    check("all non-excluded concepts have cards", queue["due_now"] == 4, str(queue["due_now"]))
-    check("excluded concept has no card", all(i["concept"] != "Measure theory" for i in queue["items"]))
+    check("untaught concepts stay out of the review queue", queue["due_now"] == 0, str(queue["due_now"]))
 
     graded = srs.grade(subject, "Sequence limit", score=1.0, variant="epsilon-N from definition", minutes_on_task=12)
     check("good grade schedules forward", graded["next_due"] > to_iso(now()), graded["next_due"])
+    check(
+        "grading admits the concept to the queue",
+        any(i["concept"] == "Sequence limit" for i in srs.due_queue(subject)["items"]),
+    )
     check("rating derived as Easy", graded["rating_name"] == "Easy", graded["rating_name"])
 
     hinted = srs.grade(subject, "Cauchy criterion", score=1.0, hints_used=1, variant="v1")
