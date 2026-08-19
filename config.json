@@ -5,7 +5,7 @@
   "break_minutes": 10,
   "long_break_after_minutes": 120,
   "max_blocks_per_day": 4,
-  "day_start_hour": 9,
+  "day_start_hour": 6,
   "day_end_hour": 22,
 
   "review_segment_minutes": 15,

@@ -145,9 +145,13 @@ WRAPUP_DIRECTIVE = (
     "3. Deposit held-back questions into the exam pools with deposit_pool_item - required elements "
     "for theory, rubric plus reference solution for problems. Written now, not at grading time.\n"
     "4. Call record_practice for time-on-task per concept, and grade any ungraded exercises.\n"
-    "5. Prepare lesson N+1 in full and extend the outline window (§3.3).\n"
-    "6. Check kolokvium_check, exam_check and remediation_check.\n"
-    "7. Call end_block last. Then summarise the session for the user in a few lines."
+    "5. Assign the problems the block did not reach as homework - list them in the notes under "
+    "## Homework with lesson ref, problem number and variant tag, and tell the user. They are "
+    "already written and already have rubrics; solo work between blocks is what earns the "
+    "distinct days and varied reps the mastery gate counts.\n"
+    "6. Prepare lesson N+1 in full and extend the outline window (§3.3).\n"
+    "7. Check kolokvium_check, exam_check and remediation_check.\n"
+    "8. Call end_block last. Then summarise the session for the user in a few lines."
 )
 
 

@@ -18,7 +18,9 @@ on anyone's willpower today.
    the turn without a wrap-up.
 2. `review_queue(subject)` — live, right now. Never a list assembled earlier.
 3. `delayed_rechecks(subject)` — fold any owed re-checks into this segment.
-4. Tell the user in one line what the block holds: N reviews, then the new topic.
+4. Read the `## Homework` section of the previous block's notes. If it lists anything, ask
+   for it now, before the review queue — see **Homework** below.
+5. Tell the user in one line what the block holds: homework, N reviews, then the new topic.
 
 ## Review segment (~15 min of capacity)
 
@@ -37,6 +39,29 @@ variant does not advance mastery. Make each rep genuinely different.
 If the queue overflows the segment, let it. Say so plainly: "reviews ran long, so new
 material is shorter today — that is the system telling us the pace was too fast." Then
 `set_segment("new_material")` with whatever time is left.
+
+## Homework
+
+A block that runs out of time does not throw away the problems it did not reach. They were
+written with reference solutions and rubrics at creation time — that work is already done,
+and the rubric is still valid whether it is graded today or in three days.
+
+**At wrap-up**, list every untouched prepared problem under `## Homework` in the notes:
+lesson ref, problem number, variant tag. Tell the user which ones and why they matter.
+
+**At the next block open**, ask for it before the review queue. Then:
+
+- Grade each one against the rubric that already exists in the lesson file. Do not
+  regenerate the problem and do not soften the rubric because time has passed.
+- `grade_review(..., variant="<the tag from the lesson file>", kind="in_session",
+  minutes_on_task=…)`. These are real reps: distinct variant tags on a different calendar
+  day are exactly what the mastery gate counts, and homework is the cheapest way to earn
+  the `distinct_days` and `span_days` conditions that no single block can satisfy.
+- Not done? Record that plainly and move on — no lecture. If homework goes undone twice in
+  a row, the load is wrong: say so and cut the assigned set, rather than repeating it.
+
+Homework is solo by construction. The no-solutions rule applies to it in full, including
+when the user asks between blocks.
 
 ## New material
 
@@ -69,11 +94,14 @@ Triggered by the Stop hook at block end, or manually with `/wrapup`. Do all of i
    elements or rubric written now. In scoped mode, prefer real problems from the book and
    set `source`.
 4. **`record_practice`** for any time-on-task not yet logged.
-5. **Prepare lesson N+1 in full** and extend the outline window (`lesson-prep` skill).
-6. **Trigger checks**: `kolokvium_check`, `exam_check`, `remediation_check`. Act on any
+5. **Homework** — every prepared problem the block did not reach, listed under `## Homework`
+   in the notes with its variant tag, and named to the user.
+6. **Prepare lesson N+1 in full** and extend the outline window (`lesson-prep` skill).
+7. **Trigger checks**: `kolokvium_check`, `exam_check`, `remediation_check`. Act on any
    that fire — announce, schedule, or tell the user what is coming.
-7. **`end_block(notes_path, summary)`** last.
-8. Then three or four lines to the user: what was covered, what is shaky, what is next.
+8. **`end_block(notes_path, summary)`** last.
+9. Then three or four lines to the user: what was covered, what is shaky, what is next —
+   and the homework, if any was assigned.
 
 ## Reading the injected clock
 

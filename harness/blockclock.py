@@ -405,6 +405,8 @@ def end_block(
             "Append covered concepts to subjects/<subject>/covered.md",
             "Deposit held-back questions into exam-pool/ (formulations, proofs, problems) with rubrics",
             "Record time-on-task per concept (record_practice) and grade any pending exercises",
+            "Assign every prepared-but-untouched problem as homework — list it in the notes "
+            "under ## Homework with lesson ref, problem number and variant tag",
             "Trigger full preparation of lesson N+1 and extend the outline window (§3.3)",
             "Check kolokvium_check and remediation_check before ending the turn",
         ],

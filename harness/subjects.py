@@ -76,6 +76,11 @@ _Concepts to re-drill; these should show up as failed or hinted reviews too._
 
 ## Deposited into exam pool
 
+## Homework
+
+_Prepared problems the block ran out of time for. Each one: lesson ref, problem number and
+variant tag. Collected and graded at the start of the next block — the rubrics already exist._
+
 ## Next lesson
 
 """

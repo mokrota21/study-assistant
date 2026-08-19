@@ -11,8 +11,11 @@ Run the block wrap-up now, in full:
    elements for theory, rubric plus reference solution for problems, `source` when they
    come from the textbook. Then `publish_pools`.
 4. `record_practice` for any unlogged time-on-task; grade any ungraded exercises.
-5. Prepare lesson N+1 in full and extend the outline window (`lesson-prep` skill).
-6. `kolokvium_check`, `exam_check`, `remediation_check` — act on whatever fires.
-7. `end_block(notes_path, summary)`.
+5. **Homework**: every prepared problem the block did not reach is assigned, not discarded.
+   List them under `## Homework` in the notes — lesson ref, problem number, variant tag —
+   and tell the user which ones. Do not rewrite them; they already have rubrics.
+6. Prepare lesson N+1 in full and extend the outline window (`lesson-prep` skill).
+7. `kolokvium_check`, `exam_check`, `remediation_check` — act on whatever fires.
+8. `end_block(notes_path, summary)`.
 
 Then three or four lines to the user: covered, shaky, next.

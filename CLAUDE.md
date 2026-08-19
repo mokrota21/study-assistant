@@ -50,15 +50,22 @@ A study block is always: **review segment first, then new material.**
 
 ```
 start_block          → arms the clock, the hooks, and the OS notification timer
+homework             → collect and grade what the last block assigned, against its
+                       original rubric; tag each with its variant from the lesson file
 review_queue         → overdue → due → ahead-of-schedule, capped
   (per item)         → generate a FRESH exercise → grade → grade_review
 set_segment          → "new_material"
 check_gate           → may this concept be introduced at all?
   explanation        → concise, one step at a time; 1–2 worked examples
   retrieval          → exercises on the new concept; solo mode by default
-wrap-up              → notes, log_covered, pool deposits, record_practice,
+wrap-up              → notes, log_covered, pool deposits, record_practice, homework,
                        next-lesson prep, trigger checks, end_block
 ```
+
+Prepared problems a block runs out of time for are **assigned, not discarded**. They already
+carry a reference solution and a creation-time rubric, so they cost nothing to reuse, and
+solo work between blocks buys the `distinct_days` and `span_days` the mastery gate demands
+and no single block can supply.
 
 The block clock is injected into your context by hooks on every user message and
 periodically on tool calls. You do not need to track time yourself, but you must **act**
