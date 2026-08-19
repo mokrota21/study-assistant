@@ -1,20 +1,39 @@
-# Harness runtime state — machine-local, not shareable
-state/harness.db
-state/harness.db-wal
-state/harness.db-shm
-state/block.json
-state/block.tmp
-state/hook-cache.json
+# --- Personal learning data -------------------------------------------------
+# Everything under these two directories is yours: what you study, how you did,
+# when you are busy. None of it belongs in a shared repository.
+state/*
+subjects/*
+!subjects/.gitkeep
 
-# The calendar store IS worth keeping if you want your commitments versioned.
-# Uncomment to keep it private instead:
-# state/calendar.json
+# --- Local machine configuration -------------------------------------------
+# Claude Code writes per-machine permissions and MCP overrides into *.local.json.
+.claude/settings.local.json
+.mcp.local.json
+**/*.local.json
 
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+token.json
+
+# --- Build and tooling artefacts -------------------------------------------
 .venv/
 __pycache__/
 *.py[cod]
 .uv/
 uv.lock.bak
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
 
+# --- OS noise ---------------------------------------------------------------
 .DS_Store
 Thumbs.db
+desktop.ini
